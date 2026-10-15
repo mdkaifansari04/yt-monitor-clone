@@ -1,0 +1,31 @@
+{
+  "name": "yt-monitor-clone",
+  "version": "0.1.0",
+  "description": "Self-hosted YouTube competitor tracker: new uploads, title rewrites, thumbnail swaps and A/B tests across unlimited channels. Runs free on Cloudflare Workers + D1.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "youtube",
+    "competitor-analysis",
+    "thumbnail",
+    "ab-testing",
+    "cloudflare-workers",
+    "d1",
+    "self-hosted"
+  ],
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit && wrangler deploy --dry-run --outdir .wrangler/dry-run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261006.1",
+    "typescript": "^5.6.0",
+    "wrangler": "^4.141.0"
+  }
+}

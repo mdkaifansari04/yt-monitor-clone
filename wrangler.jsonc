@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "yt-monitor-clone",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "yt-monitor-clone",
+      // `npm run setup` fills this in with the database it creates in your account.
+      "database_id": "139d5515-8b34-4bfb-b41c-465250a8c09c",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Every 5 minutes the worker polls the channels and thumbnails that are due.
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "vars": {
+    // How often each channel's upload feed is re-checked.
+    "CHANNEL_INTERVAL_MIN": "15",
+    // How often each recent video's thumbnail is re-sampled (A/B + swap detection).
+    "THUMB_INTERVAL_MIN": "60",
+    // How many days after upload a video's thumbnail keeps being sampled.
+    "THUMB_TRACK_DAYS": "10",
+    // Hours a test must show a single variant before it counts as finished.
+    "AB_SETTLE_HOURS": "24",
+    // Per-run budgets. The free Workers plan allows 50 outbound fetches per run.
+    "MAX_CHANNEL_FETCHES": "10",
+    "MAX_THUMB_FETCHES": "24",
+    "RETENTION_DAYS": "60"
+  },
+  "observability": { "enabled": true }
+}
